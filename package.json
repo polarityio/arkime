@@ -1,0 +1,13 @@
+{
+  "main": "./integration.js",
+  "name": "arkime",
+  "version": "3.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Polarity",
+  "dependencies": {
+    "async": "^3.2.6",
+    "postman-request": "^2.88.1-postman.40",
+    "lodash.chunk": "^4.2.0"
+  }
+}

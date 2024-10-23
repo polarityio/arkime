@@ -1,0 +1,100 @@
+<div class="d-flex justify-content-between align-items-center mt-0">
+  <div class="p-title">Sessions</div>
+  <div class="pl-1 page-info p-footnote">{{pagingStartItem}} - {{pagingEndItem}} of {{pagingData.length}}</div>
+</div>
+<div class="mb-1">
+  <a class="p-link" href="{{details.searchLink}}">Run search in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
+</div>
+
+{{#each sessionsPaged as | session sessionIndex |}}
+  <div class="session-container">
+    <div class="session-summary">
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <div class="p-title my-0">
+          Summary #{{session.__index}}
+        </div>
+        <div>
+          {{#if session.__searchLink}}
+            <a class="p-link" href="{{session.__searchLink}}">View session in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
+          {{/if}}
+        </div>        
+      </div>
+      <div class="p-footnote mb-2">
+        {{session.id}}
+      </div>
+      {{#each summaryFields as | field |}}
+        {{#if (get session field.dbField)}}
+          {{#if (eq field.dbField "ipProtocol")}}
+            <div>
+              <span class="p-key">IP Protocol:</span>
+              <span class="p-value">
+                {{#if session.ipProtocolHumanized.keyword}}
+                  {{session.ipProtocolHumanized.protocol}} - {{session.ipProtocolHumanized.keyword}} ({{session.ipProtocol}})
+                {{else}}
+                  {{session.ipProtocol}}
+                {{/if}}
+              </span>
+            </div>
+          {{else if (eq field.type "seconds")}}
+            <div>
+              <span class="p-key">{{field.friendlyName}}:</span>
+              <span class="p-value">{{moment-format (get session field.dbField) "YYYY-MM-DD HH:mm:ss z" timeZone=timezone}}</span>
+            </div>
+          {{else}}
+            <div>
+              <span class="p-key">{{field.friendlyName}}:</span>
+              <span class="p-value">{{get session field.dbField}}</span>
+            </div>   
+          {{/if}}
+        {{/if}}
+      {{/each}}
+    </div>
+    
+    <div class="session-details">
+      <div class="p-action mt-2" {{action (toggle "__showAllFields" session)}}>
+        {{#if session.__showAllFields}}
+          {{fa-icon "caret-up" fixedWidth=true}}
+          Hide All Fields
+        {{else}}
+          {{fa-icon "caret-down" fixedWidth=true}}
+          View All Fields
+        {{/if}}
+      </div>
+      {{#if session.__showAllFields}}
+        {{#each fields as | field |}}
+          {{#if (get session field.dbField)}}
+            <div>
+              <span class="p-key">{{field.friendlyName}}:</span>
+              <span class="p-value">{{get session field.dbField}}</span>
+            </div>
+          {{/if}}
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
+{{/each}}
+
+{{!-- Session Paging component --}}
+{{#if (gt pagingData.length pageSize)}}
+  <div class="paging-bar">
+    <button class="btn paging-btn" {{action "firstPage"}} disabled={{isPrevButtonsDisabled}}>
+      {{fa-icon icon="angle-double-left" fixedWidth=false}}
+    </button>
+    <button class="btn paging-btn" {{action "prevPage"}} disabled={{isPrevButtonsDisabled}}>
+      {{fa-icon icon="angle-left" fixedWidth=false}}
+    </button>
+    <div class="paging-info">
+      {{#if (eq pageSize 1)}}
+        {{pagingStartItem}} of {{pagingData.length}}
+      {{else}}
+        {{pagingStartItem}} - {{pagingEndItem}} of {{pagingData.length}}
+      {{/if}}
+    </div>
+    <button class="btn paging-btn" {{action "nextPage"}} disabled={{isNextButtonDisabled}}>
+      {{fa-icon icon="angle-right" fixedWidth=false}}
+    </button>
+    <button class="btn paging-btn" {{action "lastPage"}} disabled={{isNextButtonDisabled}}>
+      {{fa-icon icon="angle-double-right" fixedWidth=false}}
+    </button>
+  </div>
+{{/if}}
