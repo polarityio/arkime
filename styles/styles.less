@@ -1,0 +1,184 @@
+@p-blue-grey: #607d8b;
+
+.session-container {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 4px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.p-block {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.p-title {
+  font-size: 12px;
+  color: @p-blue-grey;
+  font-weight: 700;
+}
+
+.external-icon {
+  font-size: 9px;
+  margin-bottom: 1px;
+}
+
+.green {
+  color: #2a9d75;
+}
+
+div.json-block {
+  pre {
+    white-space: pre-wrap;
+  }
+  .string {
+    color: #d14;
+  }
+  .number {
+    color: #008080;
+  }
+  .boolean {
+    color: #008080;
+  }
+  .null {
+    color: #008080;
+  }
+  .key {
+    color: #333;
+  }
+}
+
+.paging-bar {
+  display: flex;
+  align-items: center;
+  padding: 5px 0px 5px 0px;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+
+  .paging-info {
+    margin: 0px 5px;
+  }
+
+  .paging-btn {
+    border: 1px solid #e4e9f2;
+    height: 20px;
+    padding: 0px 8px 0px 8px;
+
+    &:hover:enabled {
+      background-color: darken(#e4e9f2, 5%);
+    }
+  }
+}
+
+div.fields-table {
+  font-size: 12px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 500px;
+  margin-bottom: 10px;
+  line-height: 1em;
+
+  table {
+    thead {
+      //display: none;
+    }
+
+    tbody {
+      td {
+        border-bottom: 1px solid rgb(217, 217, 217);
+      }
+
+      tr:nth-child(odd) {
+        background-color: #fff;
+      }
+
+      tr:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+
+      td:first-child {
+        min-width: 35%;
+        width: 35%;
+      }
+    }
+  }
+}
+
+.p-key, .p-value {
+  line-height: 1.4em;
+}
+
+
+.help-icon {
+  color: rgb(101, 112, 134);
+  font-weight: 400;
+}
+
+.graph-info-icon {
+  margin-left: 5px;
+  margin-right: 2px;
+}
+
+.score-container {
+  border: 1px solid #e4e9f2;
+  border-radius: 4px;
+}
+
+.external-link-icon {
+  font-size: 8px;
+  margin-bottom: 1px;
+}
+
+.copy-btn-container {
+  flex: 1 1 auto;
+  position: absolute;
+  right: 10px;
+  top: 7px;
+
+  .copy-btn {
+    font-size: 12px;
+    padding: 0px;
+    height: 20px;
+
+    :active {
+      color: darken(#388e3c, 5%);
+    }
+  }
+
+  .copy-success-message {
+    position: absolute;
+    top: 20px;
+    right: 0px;
+    background-color: rgb(222, 226, 230);
+    min-width: max-content;;
+    padding: 5px;
+    border-radius: 3px;
+
+    .copy-success-icon {
+      color: #aaa;
+    }
+
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.25s linear;
+    }
+
+    &.hidden {
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s 0.25s, opacity 0.25s linear;
+    }
+  }
+}
