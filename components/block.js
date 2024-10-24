@@ -16,14 +16,14 @@ polarity.export = PolarityComponent.extend({
     return this.get('currentPage') === 1;
   }),
   isNextButtonDisabled: Ember.computed(
-      'pagingData.length',
-      'pageSize',
-      'currentPage',
-      function () {
-        const totalResults = this.get('pagingData.length');
-        const totalPages = Math.ceil(totalResults / this.get('pageSize'));
-        return this.get('currentPage') === totalPages;
-      }
+    'pagingData.length',
+    'pageSize',
+    'currentPage',
+    function () {
+      const totalResults = this.get('pagingData.length');
+      const totalPages = Math.ceil(totalResults / this.get('pageSize'));
+      return this.get('currentPage') === totalPages;
+    }
   ),
   pagingStartItem: Ember.computed('currentPage', 'pageSize', function () {
     return (this.get('currentPage') - 1) * this.get('pageSize') + 1;
@@ -67,5 +67,64 @@ polarity.export = PolarityComponent.extend({
       const totalPages = Math.ceil(totalResults / this.get('pageSize'));
       this.set('currentPage', totalPages);
     },
+    changeTab(sessionIndex, tab) {
+      console.info(`Setting ${sessionIndex} to ${tab}`);
+      this.set(`sessions.${sessionIndex}.__activeTab`, tab);
+      if (tab === 'json' && !this.get(`sessions.${sessionIndex}.__json`)) {
+        let json = JSON.stringify(this.get(`sessions.${sessionIndex}.session`), null, 2);
+        this.set(`sessions.${sessionIndex}.__json`, this.syntaxHighlight(json));
+      }
+    },
+    copyData: function (sessionIndex) {
+      Ember.run.scheduleOnce(
+        'afterRender',
+        this,
+        this.copyElementToClipboard,
+        `arkime-${sessionIndex}-${this.get('uniqueIdPrefix')}`
+      );
+
+      Ember.run.scheduleOnce('destroy', this, this.restoreCopyState, sessionIndex);
+    }
+  },
+  copyElementToClipboard(element) {
+    window.getSelection().removeAllRanges();
+    let range = document.createRange();
+
+    range.selectNode(
+      typeof element === 'string' ? document.getElementById(element) : element
+    );
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  },
+  restoreCopyState(sessionIndex) {
+    this.set(`sessions.${sessionIndex}.__showCopyMessage`, true);
+
+    setTimeout(() => {
+      if (!this.isDestroyed) {
+        this.set(`sessions.${sessionIndex}.__showCopyMessage`, false);
+      }
+    }, 2000);
+  },
+  syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'key';
+          } else {
+            cls = 'string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      }
+    );
   }
 });

@@ -1,21 +1,22 @@
 <div class="d-flex justify-content-between align-items-center mt-0">
-  <div class="p-title">Sessions</div>
+  <div class="p-title my-0">Sessions</div>
   <div class="pl-1 page-info p-footnote">{{pagingStartItem}} - {{pagingEndItem}} of {{pagingData.length}}</div>
 </div>
-<div class="mb-1">
+<div class="my-1">
   <a class="p-link" href="{{details.searchLink}}">Run search in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
 </div>
 
-{{#each sessionsPaged as | session sessionIndex |}}
-  <div class="session-container">
+{{#each sessionsPaged as | result sessionIndex |}}
+  {{#let result.session as | session | }} 
+    <div class="session-container">
     <div class="session-summary">
       <div class="d-flex align-items-center justify-content-between mb-1">
         <div class="p-title my-0">
-          Summary #{{session.__index}}
+          Summary #{{result.__count}}
         </div>
         <div>
-          {{#if session.__searchLink}}
-            <a class="p-link" href="{{session.__searchLink}}">View session in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
+          {{#if result.__searchLink}}
+            <a class="p-link" href="{{result.__searchLink}}">View session in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
           {{/if}}
         </div>        
       </div>
@@ -51,8 +52,8 @@
     </div>
     
     <div class="session-details">
-      <div class="p-action mt-2" {{action (toggle "__showAllFields" session)}}>
-        {{#if session.__showAllFields}}
+      <div class="p-action mt-2" {{action (toggle "__showAllFields" result)}}>
+        {{#if result.__showAllFields}}
           {{fa-icon "caret-up" fixedWidth=true}}
           Hide All Fields
         {{else}}
@@ -60,18 +61,61 @@
           View All Fields
         {{/if}}
       </div>
-      {{#if session.__showAllFields}}
-        {{#each fields as | field |}}
-          {{#if (get session field.dbField)}}
-            <div>
-              <span class="p-key">{{field.friendlyName}}:</span>
-              <span class="p-value">{{get session field.dbField}}</span>
+      {{#if result.__showAllFields}}
+        <ul class="nav nav-tabs mt-2 position-relative">
+          <li class="nav-item">
+            <a {{action "changeTab" result.__index "table"}} class="nav-link {{if (or (eq result.__activeTab "table")(not result.__activeTab)) "active"}}" href="#">Table</a>
+          </li>
+          <li class="nav-item">
+            <a {{action "changeTab" result.__index "json"}} class="nav-link {{if (eq result.__activeTab "json") "active"}}" href="#">JSON</a>
+          </li>
+          <li>
+            <div class="d-flex align-items-center justify-content-end copy-btn-container">
+              <button class="btn copy-btn p-action" {{action "copyData" result.__index}} title="Copy Information to Clipboard">
+                {{fa-icon icon="clipboard" fixedWidth=true}}
+              </button>
+              <div class="copy-success-message {{if result.__showCopyMessage "visible" "hidden"}}">
+                {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
+                Copied Session Information.
+              </div>
+            </div>
+          </li>
+        </ul>
+      {{!-- Session Data as Table --}}
+        <div id="{{concat "arkime-" result.__index "-" uniqueIdPrefix}}">
+          {{#if (or (eq result.__activeTab "table")(not result.__activeTab))}}
+            <div class="tab-container fields-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each fields as | field |}}
+                    {{#if (get session field.dbField)}}
+                      <tr>
+                        <td>{{field.friendlyName}}</td>
+                        <td>{{get session field.dbField}}</td>
+                      </tr>
+                    {{/if}}
+                  {{/each}}
+                </tbody>
+              </table>
             </div>
           {{/if}}
-        {{/each}}
+          {{!-- Session Data as JSON --}}
+          {{#if (eq result.__activeTab "json")}}
+              <div class="tab-container json-block">
+                <pre>{{{result.__json}}}</pre>
+              </div>
+          {{/if}}
+        </div>
       {{/if}}
     </div>
   </div>
+  {{/let}}
 {{/each}}
 
 {{!-- Session Paging component --}}

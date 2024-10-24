@@ -22,21 +22,29 @@ const createResultObjects = (
   apiResponse = formatData(apiResponse);
 
   if (apiResponse.data.length > 0) {
+    const sessions = [];
     // Add a synthetic index so we can display the session number even when using
     // paging in the component
     apiResponse.data.forEach((session, index) => {
-      session.__index = index + 1;
+      let resultObject = {
+        session,
+        __index: index,
+        __count: index + 1
+      };      
+
       // session.id looks like this `3@241023-bzn5qw5A6TJBeJBeCriaaVVr` but when using the id in an expression we
       // need to drop the `@` sign and everything to the left of it.
       const tokens = session.id.split('@');
       const sessionId = tokens.length > 1 ? tokens[1] : '';
       if (sessionId) {
-        session.__searchLink = `${options.url}sessions?expression=id${encodeURIComponent(
+        resultObject.__searchLink = `${options.url}sessions?expression=id${encodeURIComponent(
           '=='
         )}${sessionId}&startTime=${convertMillisecondsToSecondsRoundDown(
           session.firstPacket
         )}&stopTime=${convertMillisecondsToSecondsRoundUp(session.lastPacket)}`;
       }
+
+      sessions.push(resultObject);
     });
 
     lookupResults.push({
@@ -44,7 +52,7 @@ const createResultObjects = (
       data: {
         summary: createSummary(apiResponse.data, options),
         details: {
-          sessions: apiResponse.data,
+          sessions,
           fields: fieldsAsArray,
           summaryFields,
           // This is the URL that will run the search within Arkime
