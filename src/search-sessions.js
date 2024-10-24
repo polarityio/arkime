@@ -4,12 +4,20 @@
 const polarityRequest = require('./polarity-request');
 const { ApiRequestError } = require('./errors');
 const { getLogger } = require('./logger');
-const { request } = require('../config/config');
 const SUCCESS_CODES = [200];
 const entityTemplateReplacementRegex = /{{entity}}/gi;
 
 async function searchSessions(entity, options, fieldsAsString = '') {
   const Logger = getLogger();
+
+  const expression = getExpression(entity, options);
+
+  if (!expression) {
+    // if no expression is set we don't run a search and return an empty data result
+    return {
+      data: []
+    };
+  }
 
   const requestOptions = createRequestOptions(entity, options, fieldsAsString);
 
@@ -62,31 +70,15 @@ function createRequestOptions(entity, options, fieldsAsString) {
 }
 
 function getExpression(entity, options) {
-  if (entity.isIP) {
-    return options.ipExpression.replace(entityTemplateReplacementRegex, entity.value);
-  } else if (entity.isDomain) {
-    return options.domainExpression.replace(entityTemplateReplacementRegex, entity.value);
-  } else if (entity.isUrl) {
-    return options.urlExpression.replace(entityTemplateReplacementRegex, entity.value);
+  if (entity.isIP && options.ipExpression.trim().length > 0) {
+    return options.ipExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
+  } else if (entity.isDomain && options.domainExpression.trim().length > 0) {
+    return options.domainExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
+  } else if (entity.isUrl && options.urlExpression.trim().length > 0) {
+    return options.urlExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
   }
-}
-
-function getIndicatorType(entity) {
-  if (entity.isDomain) {
-    return 'host';
-  }
-  if (entity.isIP) {
-    return 'address';
-  }
-  if (entity.isHash) {
-    return 'file';
-  }
-  if (entity.isEmail) {
-    return 'emailAddress';
-  }
-  if (entity.isURL) {
-    return 'url';
-  }
+  
+  return null;
 }
 
 module.exports = {

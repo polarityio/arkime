@@ -5,7 +5,7 @@ module.exports = {
   entityTypes: ['IPv4', 'IPv6', 'domain', 'url'],
   styles: ['./styles/styles.less'],
   onDemandOnly: true,
-  defaultColor: 'light-pink',
+  defaultColor: 'light-gray',
   block: {
     component: {
       file: './components/block.js'
@@ -23,7 +23,7 @@ module.exports = {
     proxy: ''
   },
   logging: {
-    level: 'trace'
+    level: 'info'
   },
   options: [
     {
@@ -99,7 +99,7 @@ module.exports = {
       key: 'summary',
       name: 'Session Summary Fields',
       description:
-        'Comma delimited list of session database fields to display in the summary section of the details block.  Fields not listed will be viewable when the user clicks to view additional details.  The default fields are `firstPacket, lastPacket, ipProtocol, source.ip, source.port, destination.ip, destination.port, network.packets, network.bytes, node`',
+        'Comma delimited list of session database fields to display in the summary section of the details block.  Fields not listed will be viewable when the user clicks to view additional details.  The default fields are `firstPacket, lastPacket, ipProtocol, source.ip, source.port, destination.ip, destination.port, network.packets, network.bytes, node`.  If left blank, the default fields will be used.',
       default:
         'firstPacket, lastPacket, ipProtocol, source.ip, source.port, destination.ip, destination.port, network.packets, network.bytes, node',
       type: 'text',

@@ -1,8 +1,10 @@
 <div class="d-flex justify-content-between align-items-center mt-0">
   <div class="p-title my-0">Sessions</div>
-  <div class="pl-1 page-info p-footnote">{{pagingStartItem}} - {{pagingEndItem}} of {{pagingData.length}}</div>
+  <div class="p-footnote">{{sessions.length}} of {{details.totalSessions}} filtered sessions returned</div>
+  
 </div>
-<div class="my-1">
+<div class="my-1 d-flex align-items-center justify-content-between">
+  <div class="pl-1 page-info p-footnote">{{pagingStartItem}} - {{pagingEndItem}} of {{pagingData.length}}</div>
   <a class="p-link" href="{{details.searchLink}}">Run search in Arkime {{fa-icon "external-link" class="external-icon"}}</a>
 </div>
 

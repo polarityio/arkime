@@ -72,10 +72,13 @@ const maybeCacheFields = async (options) => {
 };
 
 const maybeCacheSummaryFields = (options) => {
-  if (previousSummaryFieldOptionValue !== null && previousSummaryFieldOptionValue === options.summary) {
+  if (
+    previousSummaryFieldOptionValue !== null &&
+    previousSummaryFieldOptionValue === options.summary
+  ) {
     return;
   }
-  
+
   summaryFields = [];
 
   previousSummaryFieldOptionValue = options.summary;
@@ -136,16 +139,24 @@ function validateOptions(userOptions, cb) {
     });
   }
 
-  // if (
-  //     typeof userOptions.ipExpression.value !== 'string' ||
-  //     (typeof userOptions.ipExpression.value === 'string' &&
-  //         userOptions.ipExpression.value.length === 0)
-  // ) {
-  //   errors.push({
-  //     key: 'expression',
-  //     message: 'You must provide a valid Arkime search expression'
-  //   });
-  // }
+  if (
+    userOptions.ipExpression.value.length === 0 &&
+    userOptions.domainExpression.value.length === 0 &&
+    userOptions.urlExpression.value.length === 0
+  ) {
+    errors.push({
+      key: 'ipExpression',
+      message: 'You must provide at least one expression for session searches to work'
+    });
+    errors.push({
+      key: 'domainExpression',
+      message: 'You must provide at least one expression for session searches to work'
+    });
+    errors.push({
+      key: 'urlExpression',
+      message: 'You must provide at least one expression for session searches to work'
+    });
+  }
 
   cb(null, errors);
 }

@@ -4,6 +4,8 @@ Arkime is an open-source, large scale, full packet capturing, indexing, and data
 
 To learn more about Arkime, visit the [official website](https://arkime.com/).
 
+<img src="./assets/overlay.png" width="50%">
+
 ## Integration Options
 
 ### Arkime Server URL
@@ -33,7 +35,7 @@ Comma delimited list of session database fields to display in the summary sectio
 ```
 firstPacket, lastPacket, ipProtocol, source.ip, source.port, destination.ip, destination.port, network.packets, network.bytes, node
 ```
-
+If left blank, the default fields will be used.
 ## Installation Instructions
 
 Installation instructions for integrations are provided on the [PolarityIO GitHub Page](https://polarityio.github.io/).

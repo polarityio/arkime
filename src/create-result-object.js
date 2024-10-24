@@ -21,7 +21,7 @@ const createResultObjects = (
 
   apiResponse = formatData(apiResponse);
 
-  if (apiResponse.data.length > 0) {
+  if (apiResponse && apiResponse.data.length > 0) {
     const sessions = [];
     // Add a synthetic index so we can display the session number even when using
     // paging in the component
@@ -30,14 +30,16 @@ const createResultObjects = (
         session,
         __index: index,
         __count: index + 1
-      };      
+      };
 
       // session.id looks like this `3@241023-bzn5qw5A6TJBeJBeCriaaVVr` but when using the id in an expression we
       // need to drop the `@` sign and everything to the left of it.
       const tokens = session.id.split('@');
       const sessionId = tokens.length > 1 ? tokens[1] : '';
       if (sessionId) {
-        resultObject.__searchLink = `${options.url}sessions?expression=id${encodeURIComponent(
+        resultObject.__searchLink = `${
+          options.url
+        }sessions?expression=id${encodeURIComponent(
           '=='
         )}${sessionId}&startTime=${convertMillisecondsToSecondsRoundDown(
           session.firstPacket
@@ -55,6 +57,7 @@ const createResultObjects = (
           sessions,
           fields: fieldsAsArray,
           summaryFields,
+          totalSessions: apiResponse.recordsFiltered,
           // This is the URL that will run the search within Arkime
           searchLink: `${options.url}sessions?expression=${getExpression(
             entity,
@@ -82,11 +85,13 @@ function convertMillisecondsToSecondsRoundUp(milliseconds) {
 }
 
 const formatData = (apiResponse) => {
-  apiResponse.data.forEach((session) => {
-    if (session.ipProtocol) {
-      session.ipProtocolHumanized = ipProtocolNumbers[session.ipProtocol];
-    }
-  });
+  if (Array.isArray(apiResponse.data)) {
+    apiResponse.data.forEach((session) => {
+      if (session.ipProtocol) {
+        session.ipProtocolHumanized = ipProtocolNumbers[session.ipProtocol];
+      }
+    });
+  }
 
   return apiResponse;
 };
@@ -99,7 +104,7 @@ const formatData = (apiResponse) => {
 const createSummary = (match, options) => {
   const tags = [];
 
-  tags.push(`Results: ${match.length}`);
+  tags.push(`Sessions: ${match.length}`);
 
   return tags;
 };
