@@ -1,6 +1,5 @@
 'use strict';
 
-const chunk = require('lodash.chunk');
 const async = require('async');
 
 const { setLogger } = require('./src/logger');
