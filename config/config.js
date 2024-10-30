@@ -14,7 +14,6 @@ module.exports = {
       file: './templates/block.hbs'
     }
   },
-  javascript: ['./javascript/vendor.js'],
   request: {
     cert: '',
     key: '',
