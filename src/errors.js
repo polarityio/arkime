@@ -56,13 +56,12 @@ const NETWORK_CONNECTION_ERROR_CODES = new Set([
 //TODO: JSON.stringify(error, Object.getOwnPropertyNames(error)) doesn't seem to stringify nested properties
 //so anything inside the `meta` property doesn't get stringified
 const parseErrorToReadableJSON = (error) => {
-  if(error instanceof IntegrationError){
-    return JSON.parse(JSON.stringify(error))
+  if (error instanceof IntegrationError) {
+    return JSON.parse(JSON.stringify(error));
   } else {
     return JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)));
   }
-}
-
+};
 
 /**
  * Native errors contain the following properties:

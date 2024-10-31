@@ -32,7 +32,8 @@ async function searchSessions(entity, options, fieldsAsString = '') {
       `Unexpected status code ${apiResponse.statusCode} received when making request to the Arkime API`,
       {
         statusCode: apiResponse.statusCode,
-        requestOptions: apiResponse.requestOptions
+        requestOptions: apiResponse.requestOptions,
+        responseBody: apiResponse.body
       }
     );
   }
@@ -40,7 +41,8 @@ async function searchSessions(entity, options, fieldsAsString = '') {
   if (apiResponse.body.error && apiResponse.body.error.length > 0) {
     throw new ApiRequestError(apiResponse.body.error, {
       statusCode: apiResponse.statusCode,
-      requestOptions: apiResponse.requestOptions
+      requestOptions: apiResponse.requestOptions,
+      responseBody: apiResponse.body
     });
   }
 
@@ -71,13 +73,19 @@ function createRequestOptions(entity, options, fieldsAsString) {
 
 function getExpression(entity, options) {
   if (entity.isIP && options.ipExpression.trim().length > 0) {
-    return options.ipExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
+    return options.ipExpression
+      .trim()
+      .replace(entityTemplateReplacementRegex, entity.value);
   } else if (entity.isDomain && options.domainExpression.trim().length > 0) {
-    return options.domainExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
+    return options.domainExpression
+      .trim()
+      .replace(entityTemplateReplacementRegex, entity.value);
   } else if (entity.isUrl && options.urlExpression.trim().length > 0) {
-    return options.urlExpression.trim().replace(entityTemplateReplacementRegex, entity.value);
+    return options.urlExpression
+      .trim()
+      .replace(entityTemplateReplacementRegex, entity.value);
   }
-  
+
   return null;
 }
 
