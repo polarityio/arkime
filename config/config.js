@@ -55,6 +55,30 @@ module.exports = {
       adminOnly: true
     },
     {
+      key: 'authMethod',
+      name: 'API Authentication Mode',
+      description:
+        "Choose the Arkime API authentication mode configured on your Arkime server.  Arkime's default API authentication mode is Digest.",
+      default: {
+        value: 'digest',
+        display: 'Digest authentication'
+      },
+      type: 'select',
+      options: [
+        {
+          value: 'digest',
+          display: 'Digest authentication'
+        },
+        {
+          value: 'basic',
+          display: 'Basic authentication'
+        }
+      ],
+      multiple: false,
+      userCanEdit: false,
+      adminOnly: true
+    },
+    {
       key: 'ipExpression',
       name: 'Arkime IP Expression',
       description:
