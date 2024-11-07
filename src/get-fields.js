@@ -19,7 +19,7 @@ async function getFields(options) {
       `Unexpected status code ${apiResponse.statusCode} received when making request to the Arkime API to fetch fields`,
       {
         statusCode: apiResponse.statusCode,
-        requestOptions: apiResponse.requestOptions,
+        requestOptions,
         responseBody: apiResponse.body
       }
     );
@@ -28,17 +28,17 @@ async function getFields(options) {
   if (apiResponse.body.error && apiResponse.body.error.length > 0) {
     throw new ApiRequestError(apiResponse.body.error, {
       statusCode: apiResponse.statusCode,
-      requestOptions: apiResponse.requestOptions,
+      requestOptions,
       responseBody: apiResponse.body
     });
   }
-  
+
   if (!Array.isArray(apiResponse.body)) {
     throw new ApiRequestError(
       `Unexpected response from 'api/fields' endpoint.  Expected array of field values.`,
       {
         statusCode: apiResponse.statusCode,
-        requestOptions: apiResponse.requestOptions,
+        requestOptions,
         responseBody: apiResponse.body
       }
     );
@@ -49,14 +49,11 @@ async function getFields(options) {
 
 function createRequestOptions(options) {
   const url = options.url.endsWith('/') ? options.url : `${options.url}/`;
+
+  // Auth options are set in `polarity-request.js`
   let requestOptions = {
     uri: `${url}api/fields`,
     method: 'GET',
-    auth: {
-      username: options.username,
-      password: options.password,
-      sendImmediately: false
-    },
     qs: {
       array: true
     }

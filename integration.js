@@ -50,9 +50,8 @@ const doLookup = async (entities, options, cb) => {
     maybeCacheSummaryFields(options);
     await async.parallelLimit(tasks, MAX_TASKS_AT_A_TIME);
   } catch (error) {
-    const errorAsPojo = parseErrorToReadableJSON(error);
-    Logger.error({ error: errorAsPojo }, 'Error in doLookup');
-    return cb(errorAsPojo);
+    Logger.error({ error }, 'Error in doLookup');
+    return cb(error);
   }
 
   Logger.trace({ lookupResults }, 'Lookup Results');

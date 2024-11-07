@@ -32,7 +32,7 @@ async function searchSessions(entity, options, fieldsAsString = '') {
       `Unexpected status code ${apiResponse.statusCode} received when making request to the Arkime API`,
       {
         statusCode: apiResponse.statusCode,
-        requestOptions: apiResponse.requestOptions,
+        requestOptions,
         responseBody: apiResponse.body
       }
     );
@@ -41,7 +41,7 @@ async function searchSessions(entity, options, fieldsAsString = '') {
   if (apiResponse.body.error && apiResponse.body.error.length > 0) {
     throw new ApiRequestError(apiResponse.body.error, {
       statusCode: apiResponse.statusCode,
-      requestOptions: apiResponse.requestOptions,
+      requestOptions,
       responseBody: apiResponse.body
     });
   }
@@ -50,14 +50,10 @@ async function searchSessions(entity, options, fieldsAsString = '') {
 }
 
 function createRequestOptions(entity, options, fieldsAsString) {
+  // Auth options are set in `polarity-request.js`
   let requestOptions = {
     uri: `${options.url}api/sessions`,
     method: 'POST',
-    auth: {
-      username: options.username,
-      password: options.password,
-      sendImmediately: false
-    },
     body: {
       expression: getExpression(entity, options),
       date: options.hoursBack

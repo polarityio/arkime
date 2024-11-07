@@ -35,6 +35,19 @@ class PolarityRequest {
   }
 
   async request(requestOptions, userOptions) {
+    if (userOptions.authMethod.value === 'digest') {
+      requestOptions.auth = {
+        username: userOptions.username,
+        password: userOptions.password,
+        sendImmediately: false
+      };
+    } else {
+      requestOptions.auth = {
+        username: userOptions.username,
+        password: userOptions.password
+      };
+    }
+
     return new Promise(async (resolve, reject) => {
       this.requestWithDefaults(requestOptions, (err, response) => {
         if (err) {
