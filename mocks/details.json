@@ -1,0 +1,150 @@
+{
+  "sessions": [
+    {
+      "session": {
+        "id": "3@241023-bzn5qw5A6TJBeJBeCriaaVVr",
+        "firstPacket": 1729699200000,
+        "lastPacket": 1729699245000,
+        "ipProtocol": 6,
+        "ipProtocolHumanized": {
+          "keyword": "TCP",
+          "protocol": "Transmission Control",
+          "reference": "[RFC793]"
+        },
+        "source": {
+          "ip": "192.168.1.100",
+          "port": 54321,
+          "packets": 245,
+          "bytes": 125000
+        },
+        "destination": {
+          "ip": "10.0.0.50",
+          "port": 443,
+          "packets": 198,
+          "bytes": 89500
+        },
+        "network": {
+          "packets": 443,
+          "bytes": 214500
+        },
+        "node": "arkime-node-01",
+        "user": "john.smith",
+        "tags": ["encrypted", "outbound"],
+        "http": {
+          "uri": "/api/v1/users",
+          "method": "GET",
+          "statuscode": 200,
+          "useragent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        },
+        "certificate": {
+          "issuer": "CN=Let's Encrypt Authority X3",
+          "subject": "CN=api.example.com"
+        }
+      },
+      "__index": 0,
+      "__count": 1,
+      "__searchLink": "https://arkime.local/sessions?expression=id==241023-bzn5qw5A6TJBeJBeCriaaVVr&startTime=1729699200&stopTime=1729699245"
+    },
+    {
+      "session": {
+        "id": "3@241023-cko6rx7B8VKDgKDgDtkbbWWs",
+        "firstPacket": 1729699150000,
+        "lastPacket": 1729699180000,
+        "ipProtocol": 17,
+        "ipProtocolHumanized": {
+          "keyword": "UDP",
+          "protocol": "User Datagram",
+          "reference": "[RFC768]"
+        },
+        "source": {
+          "ip": "192.168.1.101",
+          "port": 53,
+          "packets": 12,
+          "bytes": 1024
+        },
+        "destination": {
+          "ip": "8.8.8.8",
+          "port": 53,
+          "packets": 10,
+          "bytes": 890
+        },
+        "network": {
+          "packets": 22,
+          "bytes": 1914
+        },
+        "node": "arkime-node-02",
+        "dns": {
+          "query": "malicious-domain.com",
+          "queryType": "A",
+          "answer": ["203.0.113.42"]
+        }
+      },
+      "__index": 1,
+      "__count": 2,
+      "__searchLink": "https://arkime.local/sessions?expression=id==241023-cko6rx7B8VKDgKDgDtkbbWWs&startTime=1729699150&stopTime=1729699180"
+    },
+    {
+      "session": {
+        "id": "3@241023-dmp8sz9C9WLEhLEhEulccXXt",
+        "firstPacket": 1729699100000,
+        "lastPacket": 1729699105000,
+        "ipProtocol": 1,
+        "ipProtocolHumanized": {
+          "keyword": "ICMP",
+          "protocol": "Internet Control Message",
+          "reference": "[RFC792]"
+        },
+        "source": {
+          "ip": "192.168.1.102",
+          "port": 0,
+          "packets": 5,
+          "bytes": 420
+        },
+        "destination": {
+          "ip": "1.1.1.1",
+          "port": 0,
+          "packets": 5,
+          "bytes": 420
+        },
+        "network": {
+          "packets": 10,
+          "bytes": 840
+        },
+        "node": "arkime-node-01",
+        "icmp": {
+          "type": 8,
+          "code": 0
+        }
+      },
+      "__index": 2,
+      "__count": 3,
+      "__searchLink": "https://arkime.local/sessions?expression=id==241023-dmp8sz9C9WLEhLEhEulccXXt&startTime=1729699100&stopTime=1729699105"
+    }
+  ],
+  "fields": [
+    {
+      "dbField": "firstPacket",
+      "friendlyName": "First Packet",
+      "type": "seconds"
+    },
+    {
+      "dbField": "ipProtocol",
+      "friendlyName": "IP Protocol",
+      "type": "integer"
+    }
+  ],
+  "summaryFields": [
+    {
+      "dbField": "firstPacket",
+      "friendlyName": "First Packet",
+      "type": "seconds"
+    },
+    {
+      "dbField": "ipProtocol",
+      "friendlyName": "IP Protocol",
+      "type": "integer"
+    }
+  ],
+  "totalSessions": 247,
+  "searchLink": "https://arkime.local/sessions?expression=ip==192.168.1.100&date=1"
+}

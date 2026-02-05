@@ -1,0 +1,31 @@
+{
+  "root": {
+    "path": "",
+    "on_null": "return_empty"
+  },
+  "pipeline": [
+    {
+      "op": "copy",
+      "from": "totalSessions",
+      "to": "reduced_results.total_sessions"
+    },
+    {
+      "op": "copy",
+      "from": "sessions[].session.ipProtocolHumanized.protocol",
+      "to": "reduced_results.sessions_protocols"
+    },
+    {
+      "op": "copy",
+      "from": "sessions[].session.ipProtocol",
+      "to": "reduced_results.sessions_ip_protocol_numbers"
+    },
+    {
+      "op": "prune",
+      "strategy": "empty_values",
+      "target": "reduced_results"
+    }
+  ],
+  "output": {
+    "result": "$working.reduced_results"
+  }
+}
